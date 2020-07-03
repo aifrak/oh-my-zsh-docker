@@ -1,4 +1,4 @@
-FROM debian:buster-slim as oh-my-zsh
+FROM debian:buster-slim
 
 ARG LSD_DELUXE_VERSION=0.17.0
 ARG NERDS_FONT_VERSION=2.1.0
