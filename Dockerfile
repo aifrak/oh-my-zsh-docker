@@ -4,9 +4,11 @@ ARG LSD_DELUXE_VERSION=0.17.0
 ARG NERDS_FONT_VERSION=2.1.0
 
 ENV ZSH_DIR=/zsh
+ENV ZSH_DOCKER=/zsh/docker
 
 RUN set -ex \
-  && mkdir $ZSH_DIR
+  && mkdir $ZSH_DIR \
+  && mkdir -p $ZSH_DOCKER
 
 WORKDIR $ZSH_DIR
 
@@ -61,5 +63,8 @@ RUN set -ex \
   $LSD_DELUXE_DEPS \
   $NERD_FONTS_DEPS \
   $OH_MY_ZSH_DEPS
+
+COPY ./config/.zshrc $ZSH_DOCKER/.zshrc
+COPY ./config/aliases.zsh $ZSH_DOCKER/aliases.zsh
 
 CMD ["bash"]
