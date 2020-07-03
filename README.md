@@ -1,2 +1,8 @@
-# oh-my-zsh-docker
-Installation of a customized oh-my-zsh on Debian.
+# oh-my-zsh in Docker
+Installation of a customized dockerized oh-my-zsh (Debian).
+
+### Docker
+docker pull aifrak/oh-my-zsh
+
+### Docker hub
+https://hub.docker.com/r/aifrak/oh-my-zsh
