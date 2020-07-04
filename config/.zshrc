@@ -6,13 +6,6 @@ export ZSH=$HOME/.oh-my-zsh
 
 export TERM="xterm-256color"
 
-# LSDeluxe
-# alias ls='lsd'
-# alias l='ls -l'
-# alias la='ls -a'
-# alias lla='ls -la'
-# alias lt='ls --tree'
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
