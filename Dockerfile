@@ -2,6 +2,7 @@ FROM debian:buster-slim
 
 ARG LSDELUXE_VERSION=0.17.0
 ARG NERDS_FONT_VERSION=2.1.0
+ARG FZF_VERSION=0.21.1
 
 ENV ZSH_DIR=/zsh
 ENV ZSH_DOCKER=/zsh/docker
@@ -31,6 +32,12 @@ RUN set -ex \
   && git clone --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting \
   && git clone --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions \
   && git clone --branch 'v0.6.7' --depth 1 https://github.com/Powerlevel9k/powerlevel9k.git $ZSH_CUSTOM/themes/powerlevel9k \
+  # FZF - executable only (required for zsh-interactive-cd)
+  && FZF_DOWNLOAD_SHA256="7d4e796bd46bcdea69e79a8f571be1da65ae9d9cc984b50bc4af5c0b5754fbd5" \
+  && wget -O fzf.tgz https://github.com/junegunn/fzf-bin/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tgz \
+  && echo "$FZF_DOWNLOAD_SHA256  fzf.tgz" | sha256sum -c - \
+  && tar zxvf fzf.tgz --directory /usr/local/bin \
+  && rm fzf.tgz \
   # LSDeluxe
   && LSDELUXE_DOWNLOAD_SHA256="ac85771d6195ef817c9d14f8a8a0d027461bfc290d46cb57e434af342a327bb2" \
   && wget -O lsdeluxe.deb https://github.com/Peltoche/lsd/releases/download/${LSDELUXE_VERSION}/lsd_${LSDELUXE_VERSION}_amd64.deb \
