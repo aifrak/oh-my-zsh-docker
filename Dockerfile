@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 
-ARG LSD_DELUXE_VERSION=0.17.0
+ARG LSDELUXE_VERSION=0.17.0
 ARG NERDS_FONT_VERSION=2.1.0
 
 ENV ZSH_DIR=/zsh
@@ -14,12 +14,12 @@ WORKDIR $ZSH_DIR
 
 RUN set -ex \
   && apt-get update \
-  && LSD_DELUXE_DEPS="ca-certificates" \
+  && LSDELUXE_DEPS="ca-certificates" \
   && NERD_FONTS_DEPS="wget" \
   && OH_MY_ZSH_DEPS="wget git" \
   && apt-get install --yes --no-install-recommends \
   # install dependencies
-  $LSD_DELUXE_DEPS \
+  $LSDELUXE_DEPS \
   $NERD_FONTS_DEPS \
   $OH_MY_ZSH_DEPS \
   zsh \
@@ -31,12 +31,12 @@ RUN set -ex \
   && git clone --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting \
   && git clone --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions \
   && git clone --branch 'v0.6.7' --depth 1 https://github.com/Powerlevel9k/powerlevel9k.git $ZSH_CUSTOM/themes/powerlevel9k \
-  # LSD Deluxe
-  && LSD_DELUXE_DOWNLOAD_SHA256="ac85771d6195ef817c9d14f8a8a0d027461bfc290d46cb57e434af342a327bb2" \
-  && wget -O lsd_deluxe.deb https://github.com/Peltoche/lsd/releases/download/${LSD_DELUXE_VERSION}/lsd_${LSD_DELUXE_VERSION}_amd64.deb \
-  && echo "$LSD_DELUXE_DOWNLOAD_SHA256  lsd_deluxe.deb" | sha256sum -c - \
-  && dpkg -i lsd_deluxe.deb \
-  && rm lsd_deluxe.deb \
+  # LSDeluxe
+  && LSDELUXE_DOWNLOAD_SHA256="ac85771d6195ef817c9d14f8a8a0d027461bfc290d46cb57e434af342a327bb2" \
+  && wget -O lsdeluxe.deb https://github.com/Peltoche/lsd/releases/download/${LSDELUXE_VERSION}/lsd_${LSDELUXE_VERSION}_amd64.deb \
+  && echo "$LSDELUXE_DOWNLOAD_SHA256  lsdeluxe.deb" | sha256sum -c - \
+  && dpkg -i lsdeluxe.deb \
+  && rm lsdeluxe.deb \
   # Fira Code from Nerd fonts
   && FONT_DIR=$ZSH_DIR/fonts \
   && FIRA_CODE_URL=https://github.com/ryanoasis/nerd-fonts/raw/${NERDS_FONT_VERSION}/patched-fonts/FiraCode \
@@ -60,7 +60,7 @@ RUN set -ex \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.deb \
   && apt-get remove --yes \
-  $LSD_DELUXE_DEPS \
+  $LSDELUXE_DEPS \
   $NERD_FONTS_DEPS \
   $OH_MY_ZSH_DEPS
 
