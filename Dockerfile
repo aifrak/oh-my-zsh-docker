@@ -1,9 +1,5 @@
 FROM debian:buster-slim
 
-ARG LSDELUXE_VERSION=0.17.0
-ARG NERDS_FONT_VERSION=2.1.0
-ARG FZF_VERSION=0.21.1
-
 ENV ZSH_DIR=/zsh
 ENV ZSH_DOCKER=/zsh/docker
 
@@ -15,36 +11,49 @@ WORKDIR $ZSH_DIR
 
 RUN set -ex \
   && apt-get update \
-  && LSDELUXE_DEPS="ca-certificates" \
-  && NERD_FONTS_DEPS="wget" \
-  && OH_MY_ZSH_DEPS="wget git" \
-  && apt-get install --yes --no-install-recommends \
   # install dependencies
-  $LSDELUXE_DEPS \
-  $NERD_FONTS_DEPS \
-  $OH_MY_ZSH_DEPS \
+  && apt-get install --yes --no-install-recommends \
+  ca-certificates \
+  wget \
+  git \
   zsh \
-  # install oh-my-zsh
+  # clean cache and temporary files
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.deb
+
+# install oh-my-zsh
+RUN set -ex \
   && wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true \
-  && mv /root/.oh-my-zsh $ZSH_DIR \
-  # install oh-my-zsh plugins
+  && mv /root/.oh-my-zsh $ZSH_DIR
+
+# install oh-my-zsh plugins
+RUN set -ex \
   && ZSH_CUSTOM=$ZSH_DIR/.oh-my-zsh/custom \
   && git clone --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting \
   && git clone --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions \
-  && git clone --branch 'v0.6.7' --depth 1 https://github.com/Powerlevel9k/powerlevel9k.git $ZSH_CUSTOM/themes/powerlevel9k \
-  # FZF - executable only (required for zsh-interactive-cd)
+  && git clone --branch 'v0.6.7' --depth 1 https://github.com/Powerlevel9k/powerlevel9k.git $ZSH_CUSTOM/themes/powerlevel9k
+
+# install FZF - executable only (required for zsh-interactive-cd)
+RUN set -ex \
+  && FZF_VERSION="0.21.1" \
   && FZF_DOWNLOAD_SHA256="7d4e796bd46bcdea69e79a8f571be1da65ae9d9cc984b50bc4af5c0b5754fbd5" \
   && wget -O fzf.tgz https://github.com/junegunn/fzf-bin/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tgz \
   && echo "$FZF_DOWNLOAD_SHA256  fzf.tgz" | sha256sum -c - \
   && tar zxvf fzf.tgz --directory /usr/local/bin \
-  && rm fzf.tgz \
-  # LSDeluxe
+  && rm fzf.tgz
+
+# install LSDeluxe
+RUN set -ex \
+  && LSDELUXE_VERSION="0.17.0" \
   && LSDELUXE_DOWNLOAD_SHA256="ac85771d6195ef817c9d14f8a8a0d027461bfc290d46cb57e434af342a327bb2" \
   && wget -O lsdeluxe.deb https://github.com/Peltoche/lsd/releases/download/${LSDELUXE_VERSION}/lsd_${LSDELUXE_VERSION}_amd64.deb \
   && echo "$LSDELUXE_DOWNLOAD_SHA256  lsdeluxe.deb" | sha256sum -c - \
   && dpkg -i lsdeluxe.deb \
-  && rm lsdeluxe.deb \
-  # Fira Code from Nerd fonts
+  && rm lsdeluxe.deb
+
+# install Fira Code from Nerd fonts
+RUN set -ex \
+  && NERDS_FONT_VERSION="2.1.0" \
   && FONT_DIR=$ZSH_DIR/fonts \
   && FIRA_CODE_URL=https://github.com/ryanoasis/nerd-fonts/raw/${NERDS_FONT_VERSION}/patched-fonts/FiraCode \
   && FIRA_CODE_LIGHT_DOWNLOAD_SHA256="5e0e3b18b99fc50361a93d7eb1bfe7ed7618769f4db279be0ef1f00c5b9607d6" \
@@ -62,14 +71,7 @@ RUN set -ex \
   && echo "$FIRA_CODE_REGULAR_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Regular Nerd Font Complete.ttf" | sha256sum -c - \
   && echo "$FIRA_CODE_MEDIUM_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Medium Nerd Font Complete.ttf" | sha256sum -c - \
   && echo "$FIRA_CODE_BOLD_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Bold Nerd Font Complete.ttf" | sha256sum -c - \
-  && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c - \
-  # clean cache and temporary files
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.deb \
-  && apt-get remove --yes \
-  $LSDELUXE_DEPS \
-  $NERD_FONTS_DEPS \
-  $OH_MY_ZSH_DEPS
+  && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c -
 
 COPY ./config/.zshrc $ZSH_DOCKER/.zshrc
 COPY ./config/aliases.zsh $ZSH_DOCKER/aliases.zsh
