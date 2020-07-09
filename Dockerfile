@@ -29,9 +29,9 @@ RUN set -ex \
 # install oh-my-zsh plugins
 RUN set -ex \
   && ZSH_CUSTOM=$ZSH_DIR/.oh-my-zsh/custom \
-  && git clone --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting \
-  && git clone --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions \
-  && git clone --branch 'v0.6.7' --depth 1 https://github.com/Powerlevel9k/powerlevel9k.git $ZSH_CUSTOM/themes/powerlevel9k
+  && git clone --single-branch --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting \
+  && git clone --single-branch --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions \
+  && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 
 # install FZF - executable only (required for zsh-interactive-cd)
 RUN set -ex \
@@ -74,6 +74,7 @@ RUN set -ex \
   && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c -
 
 COPY ./config/.zshrc $ZSH_DOCKER/.zshrc
+COPY ./config/.p10k.zsh $ZSH_DOCKER/.p10k.zsh
 COPY ./config/aliases.zsh $ZSH_DOCKER/aliases.zsh
 
 CMD ["bash"]
