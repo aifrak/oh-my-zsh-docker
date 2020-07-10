@@ -2,6 +2,7 @@ FROM debian:buster-slim
 
 ENV ZSH_DIR=/zsh
 ENV ZSH_DOCKER=/zsh/docker
+ARG BUILD_DEPS="ca-certificates wget git"
 
 RUN set -ex \
   && mkdir $ZSH_DIR \
@@ -13,7 +14,7 @@ RUN set -ex \
   && apt-get update \
   # install dependencies
   && apt-get install --yes --no-install-recommends \
-  ca-certificates \
+  $BUILD_DEPS \
   wget \
   git \
   zsh \
@@ -72,6 +73,10 @@ RUN set -ex \
   && echo "$FIRA_CODE_MEDIUM_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Medium Nerd Font Complete.ttf" | sha256sum -c - \
   && echo "$FIRA_CODE_BOLD_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Bold Nerd Font Complete.ttf" | sha256sum -c - \
   && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c -
+
+# remove dependencies
+RUN set -ex \
+  && apt-get purge -y --auto-remove $BUILD_DEPS
 
 COPY ./config/.zshrc $ZSH_DOCKER/.zshrc
 COPY ./config/.p10k.zsh $ZSH_DOCKER/.p10k.zsh
