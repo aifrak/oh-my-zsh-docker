@@ -8,7 +8,7 @@ docker pull aifrak/oh-my-zsh
 https://hub.docker.com/r/aifrak/oh-my-zsh
 
 ### Theme
-- [powerlevel9k](https://github.com/Powerlevel9k/powerlevel9k)
+- [powerlevel10k](https://github.com/romkatv/powerlevel10k)
 
 ### Fonts
 - [Fira Code from Nerd fonts](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode)
