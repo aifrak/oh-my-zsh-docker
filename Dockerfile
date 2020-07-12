@@ -53,15 +53,19 @@ RUN set -ex \
   && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c -
 
 ARG APP_USER=zsh-user
-ARG APP_USER_GROUP=www-data
+ARG APP_GROUP=zsh-group
 ARG APP_USER_HOME=/home/$APP_USER
 
-# create non root user
 RUN \
-  adduser --quiet --disabled-password \
+  # create non root groups
+  addgroup $APP_USER \
+  && addgroup $APP_GROUP \
+  # create non root user
+  && adduser --quiet --disabled-password \
   --shell /bin/bash \
   --gecos "ZSH user" $APP_USER \
-  --ingroup $APP_USER_GROUP
+  --ingroup $APP_USER \
+  && adduser $APP_USER $APP_GROUP
 
 USER $APP_USER
 WORKDIR $APP_USER_HOME
@@ -80,7 +84,7 @@ RUN set -ex \
   && git clone --single-branch --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_PLUGINS/zsh-autosuggestions \
   && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
 
-COPY --chown=$APP_USER:$APP_USER_GROUP ./config/.zshrc ./config/.p10k.zsh $APP_USER_HOME/
-COPY --chown=$APP_USER:$APP_USER_GROUP ./config/aliases.zsh $ZSH_CUSTOM
+COPY --chown=$APP_USER ./config/.zshrc ./config/.p10k.zsh $APP_USER_HOME/
+COPY --chown=$APP_USER ./config/aliases.zsh $ZSH_CUSTOM
 
 CMD ["zsh"]
