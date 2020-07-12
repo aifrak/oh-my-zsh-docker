@@ -13,8 +13,8 @@ RUN set -ex \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.deb
 
 # install FZF - executable only (required for zsh-interactive-cd)
-RUN set -ex \
-  && FZF_VERSION="0.21.1" \
+RUN \
+  FZF_VERSION="0.21.1" \
   && FZF_DOWNLOAD_SHA256="7d4e796bd46bcdea69e79a8f571be1da65ae9d9cc984b50bc4af5c0b5754fbd5" \
   && wget -O fzf.tgz https://github.com/junegunn/fzf-bin/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tgz \
   && echo "$FZF_DOWNLOAD_SHA256  fzf.tgz" | sha256sum -c - \
@@ -22,8 +22,8 @@ RUN set -ex \
   && rm fzf.tgz
 
 # install LSDeluxe
-RUN set -ex \
-  && LSDELUXE_VERSION="0.17.0" \
+RUN \
+  LSDELUXE_VERSION="0.17.0" \
   && LSDELUXE_DOWNLOAD_SHA256="ac85771d6195ef817c9d14f8a8a0d027461bfc290d46cb57e434af342a327bb2" \
   && wget -O lsdeluxe.deb https://github.com/Peltoche/lsd/releases/download/${LSDELUXE_VERSION}/lsd_${LSDELUXE_VERSION}_amd64.deb \
   && echo "$LSDELUXE_DOWNLOAD_SHA256  lsdeluxe.deb" | sha256sum -c - \
@@ -31,8 +31,8 @@ RUN set -ex \
   && rm lsdeluxe.deb
 
 # install Fira Code from Nerd fonts
-RUN set -ex \
-  && NERDS_FONT_VERSION="2.1.0" \
+RUN \
+  NERDS_FONT_VERSION="2.1.0" \
   && FONT_DIR=/usr/local/share/fonts \
   && FIRA_CODE_URL=https://github.com/ryanoasis/nerd-fonts/raw/${NERDS_FONT_VERSION}/patched-fonts/FiraCode \
   && FIRA_CODE_LIGHT_DOWNLOAD_SHA256="5e0e3b18b99fc50361a93d7eb1bfe7ed7618769f4db279be0ef1f00c5b9607d6" \
@@ -71,16 +71,15 @@ USER $APP_USER
 WORKDIR $APP_USER_HOME
 
 # install oh-my-zsh
-RUN set -ex \
-  && wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
+RUN wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
 
 ARG ZSH_CUSTOM=$APP_USER_HOME/.oh-my-zsh/custom
 ARG ZSH_PLUGINS=$ZSH_CUSTOM/plugins
 ARG ZSH_THEMES=$ZSH_CUSTOM/themes
 
 # install oh-my-zsh plugins and theme
-RUN set -ex \
-  && git clone --single-branch --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_PLUGINS/zsh-syntax-highlighting \
+RUN \
+  git clone --single-branch --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_PLUGINS/zsh-syntax-highlighting \
   && git clone --single-branch --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_PLUGINS/zsh-autosuggestions \
   && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
 
