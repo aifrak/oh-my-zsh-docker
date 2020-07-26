@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster-slim as base
 
 RUN set -ex \
   && apt-get update \
@@ -52,20 +52,16 @@ RUN \
   && echo "$FIRA_CODE_BOLD_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Bold Nerd Font Complete.ttf" | sha256sum -c - \
   && echo "$FIRA_CODE_RETINA_DOWNLOAD_SHA256  $FONT_DIR/Fura Code Retina Nerd Font Complete.ttf" | sha256sum -c -
 
-ARG APP_USER=zsh-user
-ARG APP_GROUP=zsh-group
+ENV APP_USER=zsh-user
+ENV APP_USER_GROUP=www-data
 ARG APP_USER_HOME=/home/$APP_USER
 
+# create non root user
 RUN \
-  # create non root groups
-  addgroup $APP_USER \
-  && addgroup $APP_GROUP \
-  # create non root user
-  && adduser --quiet --disabled-password \
+  adduser --quiet --disabled-password \
   --shell /bin/bash \
   --gecos "ZSH user" $APP_USER \
-  --ingroup $APP_USER \
-  && adduser $APP_USER $APP_GROUP
+  --ingroup $APP_USER_GROUP
 
 USER $APP_USER
 WORKDIR $APP_USER_HOME
@@ -74,16 +70,38 @@ WORKDIR $APP_USER_HOME
 RUN wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
 
 ARG ZSH_CUSTOM=$APP_USER_HOME/.oh-my-zsh/custom
-ARG ZSH_PLUGINS=$ZSH_CUSTOM/plugins
-ARG ZSH_THEMES=$ZSH_CUSTOM/themes
 
 # install oh-my-zsh plugins and theme
 RUN \
-  git clone --single-branch --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_PLUGINS/zsh-syntax-highlighting \
+  ZSH_PLUGINS=$ZSH_CUSTOM/plugins \
+  && ZSH_THEMES=$ZSH_CUSTOM/themes \
+  && git clone --single-branch --branch '0.7.1' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_PLUGINS/zsh-syntax-highlighting \
   && git clone --single-branch --branch 'v0.6.4' --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_PLUGINS/zsh-autosuggestions \
   && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
 
-COPY --chown=$APP_USER ./config/.zshrc ./config/.p10k.zsh $APP_USER_HOME/
-COPY --chown=$APP_USER ./config/aliases.zsh $ZSH_CUSTOM
+# install oh-my-zsh config files
+COPY --chown=$APP_USER:$APP_USER_GROUP ./config/.zshrc ./config/.p10k.zsh $APP_USER_HOME/
+COPY --chown=$APP_USER:$APP_USER_GROUP ./config/aliases.zsh $ZSH_CUSTOM
 
 CMD ["zsh"]
+
+# -------------------------- #
+#           TESTS            #
+# -------------------------- #
+
+FROM aifrak/testinfra:5.2.2-python-3.8.5-slim-buster as test-testinfra
+FROM base as test-build
+
+# fix issue "/usr/local/bin/python: error while loading shared libraries: libpython3.8.so.1.0: cannot open shared object file: No such file or directory"
+ENV LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
+
+ARG DOCKER_TEST_DIR=./docker/test
+
+RUN mkdir -p $DOCKER_TEST_DIR
+
+WORKDIR $DOCKER_TEST_DIR
+
+COPY --from=test-testinfra /usr/local/ /usr/local/
+COPY --chown=$APP_USER:$APP_USER_GROUP ./test .
+
+ENTRYPOINT ["pytest"]
