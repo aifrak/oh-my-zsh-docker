@@ -4,4 +4,10 @@ services:
   sut:
     build:
       context: .
-      target: test-build
+      dockerfile: Dockerfile.test
+    depends_on:
+      - base-image
+  # base image to be tested by sut
+  base-image:
+    image: aifrak/base-image:sut
+    build: .

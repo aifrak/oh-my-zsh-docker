@@ -11,18 +11,6 @@ FONTS_PATH = '/usr/local/share/fonts'
 OH_MY_ZSH_PATH = HOME_PATH + '/.oh-my-zsh'
 
 
-def test_python():
-    assert platform.python_version() == '3.8.5'
-
-
-def test_pip_packages(host):
-    pip_packages = host.pip_package.get_packages
-
-    assert pip_packages()['pip']['version'] == '20.1.1'
-    assert pip_packages()['pytest']['version'] == '5.4.3'
-    assert pip_packages()['testinfra']['version'] == '5.2.2'
-
-
 @pytest.mark.parametrize('name,version', [
     ('git', ''),
     ('wget', ''),
