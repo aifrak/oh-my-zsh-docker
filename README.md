@@ -1,6 +1,11 @@
 # oh-my-zsh in Docker
 Installation of a customized dockerized oh-my-zsh (Debian).
 
+### How to use this image
+```
+docker run -it --rm aifrak/oh-my-zsh
+```
+
 ### Docker
 ```
 docker pull aifrak/oh-my-zsh
