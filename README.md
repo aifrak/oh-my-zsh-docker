@@ -1,3 +1,8 @@
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/aifrak/oh-my-zsh?label=build)](https://hub.docker.com/r/aifrak/oh-my-zsh/builds)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/aifrak/oh-my-zsh?color=orange&sort=semver)](https://hub.docker.com/r/aifrak/oh-my-zsh/tags)
+[![Docker Pulls](https://img.shields.io/docker/pulls/aifrak/oh-my-zsh?color=yellow&label=pulls)](https://hub.docker.com/r/aifrak/oh-my-zsh/)
+[![GitHub](https://img.shields.io/github/license/aifrak/oh-my-zsh-docker?color=blue)](https://github.com/aifrak/oh-my-zsh-docker/blob/master/LICENSE)
+
 # oh-my-zsh in Docker
 Installation of a customized dockerized oh-my-zsh (Debian).
 
