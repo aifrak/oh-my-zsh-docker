@@ -2,6 +2,12 @@
 
 
 
+## [v0.3.2](https://github.com/aifrak/oh-my-zsh-docker/releases/tag/v0.3.2)
+
+## Enhancements:
+- Move tests out of main Dockerfile
+
+
 ## [v0.3.1](https://github.com/aifrak/oh-my-zsh-docker/releases/tag/v0.3.1)
 
 ## Enhancements:
