@@ -18,7 +18,7 @@ docker pull aifrak/oh-my-zsh
 
 ## Quick references
 - __Docker hub__: https://hub.docker.com/r/aifrak/oh-my-zsh
-- __Github__: https://github.com/aifrak/oh-my-zsh-docke
+- __Github__: https://github.com/aifrak/oh-my-zsh-docker
 - __Changelog__: https://github.com/aifrak/oh-my-zsh-docker/blob/master/CHANGELOG.md
 
 ## Theme
