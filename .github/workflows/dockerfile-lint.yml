@@ -1,0 +1,40 @@
+name: Dockerfile lint
+
+on:
+  push:
+    paths:
+      - "**/*Dockerfile*"
+  pull_request:
+
+jobs:
+  skip-duplicate-actions:
+    name: Skip duplicate actions
+    runs-on: ubuntu-20.04
+    outputs:
+      should-skip: ${{ steps.skip-check.outputs.should_skip }}
+
+    steps:
+      - id: skip-check
+        name: Check if workflow is not already running
+        uses: fkirc/skip-duplicate-actions@v3.4.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          concurrent_skipping: "same_content"
+          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
+
+  lint:
+    name: Lint Dockerfile
+    needs: skip-duplicate-actions
+    if: ${{ needs.skip-duplicate-actions.outputs.should-skip != 'true' }}
+    runs-on: ubuntu-20.04
+    container:
+      image: hadolint/hadolint:v2.1.0-alpine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Lint Dockerfile
+        # Pattern ./**/*Dockerfile* is not working on Github Actions.
+        # If Dockerfile are added in other places, we need to their paths here.
+        run: hadolint ./*Dockerfile*
