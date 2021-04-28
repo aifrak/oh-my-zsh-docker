@@ -1,5 +1,6 @@
 import os
 import platform
+
 import pytest
 import testinfra
 
@@ -12,9 +13,9 @@ OH_MY_ZSH_PATH = HOME_PATH + '/.oh-my-zsh'
 
 
 @pytest.mark.parametrize('name,version', [
-    ('git', ''),
-    ('wget', ''),
-    ('zsh', ''),
+    ('git', '1:2.20.1'),
+    ('wget', '1.20.1'),
+    ('zsh', '5.7.1'),
     ('lsd', '0.17.0'),
 ])
 def test_packages(host, name, version):
@@ -76,7 +77,16 @@ def test_copied_files(host, path, user, group):
     assert file.group == group
 
 
+def test_gitstatus(host):
+    path = HOME_PATH + '/.cache/gitstatus/gitstatusd-linux-x86_64'
+    file = host.file(path)
+
+    assert file.is_file
+    assert file.user == USER_NAME
+    assert file.group == USER_GROUP
+
+
 def test_zsh(host):
-    cmd = host.run("zsh")
+    cmd = host.run('zsh')
 
     assert cmd.succeeded
