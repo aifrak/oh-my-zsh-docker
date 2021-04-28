@@ -48,6 +48,7 @@ docker pull aifrak/oh-my-zsh
 - dirhistory
 - extract
 - git
+- gitstatus
 - git-extras
 - globalias
 - mix
