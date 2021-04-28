@@ -27,7 +27,9 @@
     "Fura",
     "Markdownlint",
     "aifrak",
+    "anson",
     "copyfile",
+    "david",
     "dirhistory",
     "dockerized",
     "esbenp",
@@ -35,7 +37,6 @@
     "gitstatusd",
     "globalias",
     "hadolint",
-    "nosborn",
     "powerlevel",
     "pytest"
   ],
