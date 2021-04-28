@@ -5,8 +5,8 @@ Installation of a customized dockerized oh-my-zsh (Debian).
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/aifrak/oh-my-zsh)](https://hub.docker.com/r/aifrak/oh-my-zsh/builds)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/aifrak/oh-my-zsh?color=orange&sort=semver)](https://hub.docker.com/r/aifrak/oh-my-zsh/tags)
 [![Docker Pulls](https://img.shields.io/docker/pulls/aifrak/oh-my-zsh?color=yellow)](https://hub.docker.com/r/aifrak/oh-my-zsh/)
-[![Dockerfile lint](https://github.com/aifrak/oh-my-zsh/actions/workflows/dockerfile-lint.yml/badge.svg)](https://github.com/aifrak/oh-my-zsh/actions/workflows/dockerfile-lint.yml)
-[![Markdown lint](https://github.com/aifrak/oh-my-zsh/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/aifrak/oh-my-zsh/actions/workflows/markdown-lint.yml)
+[![Dockerfile lint](https://github.com/aifrak/oh-my-zsh-docker/actions/workflows/dockerfile-lint.yml/badge.svg)](https://github.com/aifrak/oh-my-zsh-docker/actions/workflows/dockerfile-lint.yml)
+[![Markdown lint](https://github.com/aifrak/oh-my-zsh-docker/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/aifrak/oh-my-zsh-docker/actions/workflows/markdown-lint.yml)
 [![GitHub](https://img.shields.io/github/license/aifrak/oh-my-zsh-docker?color=blue)](https://github.com/aifrak/oh-my-zsh-docker/blob/master/LICENSE)
 
 ## How to use this image
