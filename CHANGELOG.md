@@ -1,7 +1,7 @@
 <!-- markdownlint-configure-file
 {
   "MD024": {
-    "siblings_only": true
+    "allow_different_nesting": true
   }
 }
 -->
