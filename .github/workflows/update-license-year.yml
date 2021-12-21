@@ -16,6 +16,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Update license year
-        uses: FantasticFiasco/action-update-license-year@0dd479f24c62cdbbbce52c7f2ee4277c778cae06
+        uses: FantasticFiasco/action-update-license-year@v2.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
